@@ -1,0 +1,334 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage2.master.cs" Inherits="NewFolder1_MasterPage2" %>
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<form id="form1" runat="server">
+<!--[if (gte IE 9)|!(IE)]><!-->
+
+    <asp:ScriptManager ID="ScriptManager1" runat="server" OnInit="ScriptManager1_Init"></asp:ScriptManager>
+
+
+
+<html lang="en">
+<!--<![endif]-->
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+     <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title>Welcome Computer Point Karnal</title>
+    
+
+
+
+    <!--  Bootstrap Style -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+     <!--  Font-Awesome Style -->
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
+     <!--  Font-Awesome Animation Style -->
+    <link href="assets/css/font-awesome-animation.css" rel="stylesheet" />
+     <!--  Pretty Photo Style -->
+    <link href="assets/css/prettyPhoto.css" rel="stylesheet" />
+        <!--  Google Font Style -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+     <!--  Custom Style -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+   <div class="navbar navbar-default navbar-fixed-top menu-back">
+        <div class="container">
+            <div class="navbar-header">
+                <%--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>--%>
+
+                <%--<a class="navbar-brand" href="#">
+                    <img src="assets/img/logo.gif"  height="10%" width="10%" class="navbar-brand-logo " alt="" />
+                </a>--%>
+            </div>
+            <div class="navbar-collapse collapse" >
+                <%--<ul class="nav navbar-nav navbar-right">
+                   
+                    <li class="dropdown">
+                        <a href="#">HOME PAGE<i class="fa fa-folder-open-o"></i>
+                            <span>welcome computer point</span>
+
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-left">
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-paperclip"></i>Home Page One
+              <span>replace this text</span>
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-comments-o"></i>Home Page Two
+              <span>replace this text</span>
+                                </a>
+
+                            </li>
+                          
+
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#">ABOUT US<i class="fa fa-folder-open-o"></i>
+                            <span>replace this text</span>
+
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-left">
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-edit"></i>Our Services
+              <span>replace this text</span>
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-bullhorn"></i>Team Members 
+              <span>replace this text</span>
+                                </a>
+
+                            </li>
+                          
+
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#">PORTFOLIO<i class="fa fa-image"></i>
+                            <span>replace this text</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-left">
+
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-paper-plane-o"></i>Four Column 
+              <span>replace this text</span>
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-folder-open-o"></i>Three Column
+              <span>replace this text</span>
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-bullhorn"></i>Two Column
+              <span>replace this text</span>
+                                </a>
+
+                            </li>
+                        </ul>
+                    </li>
+
+                   
+                    <li class="dropdown">
+                        <a href="#">EXTRAS <i class="fa fa-bars"></i>
+                            <span>replace this text</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-left">
+
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-power-off"></i>404 Error
+              <span>replace this text</span>
+                                </a>
+
+                            </li>
+                             <li>
+                                <a href="#">
+                                    <i class="fa fa-tag"></i>Login
+              <span>welcome computer point</span>
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-map-marker"></i>Blog Home
+              <span>replace this text</span>
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-flask"></i>Blog Single
+              <span>replace this text</span>
+                                </a>
+
+                            </li>
+                           
+                           
+                           
+                        </ul>
+                    </li>
+                     <li class="dropdown">
+                        <a href="#">CONTACT <i class="fa fa-globe"></i>
+                            <span>replace this text</span>
+                        </a>
+
+                    </li>
+                </ul>--%>
+            </div>
+
+        </div>
+    </div>
+    <!--./ Top Menu End -->
+
+    <%--<div class="div-social-top" style="color:yellow;">
+
+         <p style="margin-left:30%;font-size:larger;font-family:Arial;">  STUDENT INFORMATION MANAGMENT SYSTEM  </p>  
+
+    </div>
+ --%>  
+    
+     <!--./ Social Div End -->
+    
+    <!--./ Main Slider End -->
+   <%-- <div id="welocme-note">
+
+        <div class="welcome-div">
+            <i class="fa fa-paper-plane-o fa-2x"></i><span>WELCOME GUEST, HOW YOU FEELING ?  </span>
+        </div>
+
+    </div>--%>
+
+    <br /><br />
+  
+
+    <div>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+
+
+        </asp:ContentPlaceHolder>
+    </div>
+     <div>
+       <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
+           <asp:ObjectDataSource ID="ObjectDataSource1" runat="server"></asp:ObjectDataSource>
+         </asp:ContentPlaceHolder>
+   </div>
+
+    <br /><br /><br />
+
+
+    <!--./ Welcome Section End -->
+
+
+
+
+    
+    <!--./ Home Service End -->
+   
+    <!--./ Media Section End -->
+  <%-- <div id="footer-sec">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4" id="about-ftr">
+                    <i class="fa fa-building fa-2x"></i>
+                    <span>A Small Introduction</span>
+                    <small>replace this dummy text with your text</small>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                             Praesent suscipit sem vel ipsum elementum venenatis. 
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                             Praesent suscipit sem vel ipsum elementum venenatis.
+                     
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                             Praesent suscipit sem vel ipsum elementum venenatis.
+                    </p>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <i class="fa fa-paper-plane-o fa-2x"></i>
+                    <span>From the blog</span>
+                    <small>replace this dummy text with your text</small>
+                    <div id="blog-footer-div">
+                        <div class="media">
+                            <div class="pull-left">
+                                <img src="assets/img/user2.png" class="img-circle" alt=""  />
+                            </div>
+                            <div class="media-body">
+                                <span class="media-heading"><a href="blog-home.html">Pellentesque habitant morbi tristique</a></span>
+                                <small class="muted">Posted 17 June 2014</small>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <div class="pull-left">
+                                <img src="assets/img/user.gif" class="img-circle" alt=""/>
+                            </div>
+                            <div class="media-body">
+                                <span class="media-heading"><a href="blog-home.html">Pellentesque habitant morbi tristique</a></span>
+                                <small class="muted">Posted 27 June 2014</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4">
+                    <i class="fa fa-sliders fa-2x"></i>
+                    <span>Our location</span>
+                    <small>replace this dummy text with your text</small>
+                    234/90, Newyork Street , USA
+                    <br />
+                    Call: 456-0980-0000
+                     <br />
+                    mail: info@domain.com
+                    <br />
+                    <br />
+                        <div class="input-group">
+                            <%--<input type="text" class="form-control" autocomplete="off" placeholder="Enter your email" required />--%>
+                           <%-- <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button">Subdcribe!</button>
+                            </span>
+                        </div>
+                </div>
+            </div>
+        </div>
+         </div>--%>
+    <!--./ footer-sec  End -->
+    <div id="footser-end" style="margin-top:auto">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12" style="text-align:center"> 
+                   <p style="color:yellow"> 
+                       Computer Point Institute of Management & Technology
+                   </p>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--./ footer-end End -->
+    <!--  Jquery Core Script -->
+    <%--<script src="assets/js/jquery-1.10.2.js"></script>--%>
+    <!--  Core Bootstrap Script -->
+    <script src="assets/js/bootstrap.js"></script>
+        <!--  Custom Scripts -->
+    <%--<script src="assets/js/custom.js"></script>--%>
+    
+   
+</body>
+</html>
+</form>
+

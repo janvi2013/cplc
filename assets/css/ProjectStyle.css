@@ -1,0 +1,59 @@
+﻿
+
+ .hiddencol {
+            display:none;
+        }
+        
+        .highlight {
+            text-decoration: none;
+            font-weight: bold;
+            color: yellow;
+            background: yellow;
+        }
+        
+        .td {
+            text-align:center;
+        }
+
+
+.modalBackground
+{
+background-color: black;
+filter: alpha(opacity=80);
+opacity: 0.8;
+z-index: 10000;
+}
+
+
+
+.ButtonMargin {
+            margin-left:60%;
+            color:red;
+
+            
+        }
+        .DivStyle {
+            width:100%;
+            border-color:red;
+            position:absolute;
+        }
+       .h1 {
+                font-size:smaller;
+                font-weight:500;
+                color:black;
+                font-style:normal;
+
+            }
+            .Candidateheading {
+                color:#A9052B;
+                font-size:medium;
+            }
+            .buttonSubmit {
+               border:1px solid Red;
+               background-color:green   ;
+               border-style:groove;
+               border-top:5px;
+               color:black;
+               font-size:large;
+             
+            }
