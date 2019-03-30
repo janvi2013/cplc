@@ -62,7 +62,7 @@ public partial class exams_login : System.Web.UI.Page
             Session["examtable"] = dt;
             time = 1;
             Session["time"] = time;
-            Response.Redirect("onlinexam.aspx");
+            Response.Redirect("exam.aspx");
         }
         else
         {
