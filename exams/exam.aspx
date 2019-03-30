@@ -6,136 +6,143 @@
 <head runat="server">
 
     <title></title>
-    <meta charset="UTF-8"/>
-
-    
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="eduu.css" type="text/css" media="all"/>
+    <meta charset="UTF-8" />
 
 
-     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="eduu.css" type="text/css" media="all" />
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js" type="text/javascript"></script>
 
 
     <style>
-div#test{ border:#000 1px solid; padding:10px 40px 40px 40px;margin-right:2%; }
-</style>
+        div#test {
+            border: #000 1px solid;
+            padding: 10px 40px 40px 40px;
+            margin-right: 2%;
+        }
+    </style>
 
 
 
 
     <script type="text/javascript">
 
-
+        var questions;
+        var pos = 0, curr_pos =0, test, test_status, question, choice, choices, chA, chB, chC, chD, correct = 0;
 
         $(document).ready(function () {
-           
-           
-        });
+            var totalQuestions = 0;
+            totalQuestions = parseInt($("#QuestionsCountLabel").text());
+
+            for (var i = 1; i <= totalQuestions; i++) {
+                $('.btn-no').append($('<button/>').attr("id", "button_" + i).attr("onclick","renderQuestionFromSidePanel(" + i + ");return false;").addClass('number').text(i).css({'cursor': 'pointer'}));
+            }
+            GetQuestions();
             
+            
+            $("#Button1").click(function () {
+
+                choices = document.getElementsByName("choices");
+                for (var i = 0; i < choices.length; i++) {
+                    if (choices[i].checked) {
+                        choice = choices[i].value;
+                    }
+                }
+                if (choice == questions[pos]["QuestionAnswer"]) {
+                    correct++;
+                }
+
+                pos++;
+                if ($("input[name='choices']:checked").val()) {
+                    $("#button_" + pos).css("background-color", "#00cc99");
+                }
+                else {
+                    $("#button_" + pos).css("background-color", "#ff8533");
+                }
+                curr_pos++;
+                renderQuestion();
+
+            });
+        });
+
+        function renderQuestion() {
+            debugger;
+
+            test = $("#test");
+            if (curr_pos >= questions.length) {
+                test.html("<h2>You got " + correct + " of " + questions.length + " questions correct</h2>");
+                $("#test_status").html("Test Completed");
+                pos = 0;
+                correct = 0;
+                return false;
+            }
+            $("#test_status").html("Question " + (curr_pos + 1) + " of " + questions.length);
+            question = questions[curr_pos]["Question"];
+            chA = questions[curr_pos]["Option1"];
+            chB = questions[curr_pos]["Option2"];
+            chC = questions[curr_pos]["Option3"];
+            chD = questions[curr_pos]["Option4"];
+            test.html( "<h3>" + question + "</h3>" +
+            "<input type='radio' name='choices' value='A'> " + chA + "<br>" +
+            "<input type='radio' name='choices' value='B'> " + chB + "<br>" +
+            "<input type='radio' name='choices' value='C'> " + chC + "<br>" +
+            "<input type='radio' name='choices' value='D'> " + chD + "<br><br>" +
+            "<button class='btn' type='button' onclick='checkAnswer()' >Save & Next</button>");
+        }
+
+        function renderQuestionFromSidePanel(index) {            
+            curr_pos = index - 1;
+            renderQuestion();
+            pos++;
+            if ($("input[name='choices']:checked").val()) {
+                $("#button_" + pos).css("background-color", "#00cc99");
+            }
+            else {
+                $("#button_" + pos).css("background-color", "#ff8533");
+            }
+            pos = curr_pos;
+        }
+
+        function GetQuestions() {
             $.ajax({
 
                 type: "POST",
                 url: "exam.aspx/GetData",
                 contentType: "application/json; charset=utf-8",
-                dataType: "json",   
+                dataType: "json",
+                async:false,
                 success: function (response) {
-                  var   ds = response.d;
-                    // alert(ds);
-                    
+                    var ds = response.d;                    
+                    questions = JSON.parse(ds);
+                    renderQuestion();                    
+                    //function checkAnswer() {
+                    //    debugger;
 
-                    // questions = JSON.parse(ds);
-
-                  var pos = 0, test, test_status, question, choice, choices, chA, chB, chC, chD, correct = 0;
-                  var questions;
-
-                  questions = JSON.parse(ds);
-
-                        function _(x) {
-                         return document.getElementById(x);
-                     }
-                        function renderQuestion() {
-                            debugger;
-                        
-                         test = _("test");
-                         if (pos >= questions.length) {
-                             test.innerHTML = "<h2>You got " + correct + " of " + questions.length + " questions correct</h2>";
-                             _("test_status").innerHTML = "Test Completed";
-                             pos = 0;
-                             correct = 0;
-                             return false;
-                         }
-                         _("test_status").innerHTML = "Question " + (pos + 1) + " of " + questions.length;
-                         question = questions[pos]["Question"];
-                         chA = questions[pos]["Option1"];
-                         chB = questions[pos]["Option2"];
-                         chC = questions[pos]["Option3"];
-                         chD = questions[pos]["Option4"];
-                         test.innerHTML = "<h3>" + question + "</h3>";
-                         test.innerHTML += "<input type='radio' name='choices' value='A'> " + chA + "<br>";
-                         test.innerHTML += "<input type='radio' name='choices' value='B'> " + chB + "<br>";
-                         test.innerHTML += "<input type='radio' name='choices' value='B'> " + chC + "<br>";
-                         test.innerHTML += "<input type='radio' name='choices' value='C'> " + chD + "<br><br>";
-                         test.innerHTML += "<button class='btn' type='button' onclick='checkAnswer()' >Save & Next</button>";
-                        }
+                    //    choices = document.getElementsByName("choices");
+                    //    for (var i = 0; i < choices.length; i++) {
+                    //        if (choices[i].checked) {
+                    //            choice = choices[i].value;
+                    //        }
+                    //    }
+                    //    if (choice == questions[pos][4]) {
+                    //        correct++;
+                    //    }
+                    //    pos++;
+                    //    renderQuestion();
 
 
-                        $("#Button1").click(function () {
-                            debugger;
-                            choices = document.getElementsByName("choices");
-                            for (var i = 0; i < choices.length; i++) {
-                                if (choices[i].checked) {
-                                    choice = choices[i].value;
-                                }
-                            }
-                            if (choice == questions[pos]["QuestionAnswer"]) {
-                                correct++;
-                            }
-                            pos++;
-                            renderQuestion();
-
-                        });
-
-                     //function checkAnswer() {
-                     //    debugger;
-
-                     //    choices = document.getElementsByName("choices");
-                     //    for (var i = 0; i < choices.length; i++) {
-                     //        if (choices[i].checked) {
-                     //            choice = choices[i].value;
-                     //        }
-                     //    }
-                     //    if (choice == questions[pos][4]) {
-                     //        correct++;
-                     //    }
-                     //    pos++;
-                     //    renderQuestion();
-
-
-                     //}
-
-
-
-
-
-                     window.addEventListener("load", renderQuestion, false);
-
-
-                    
-
-
+                    //}               
                 },
                 failure: function (response) {
                     alert(response.d);
                 }
 
-           
+            });
 
-           
-
-        });
-      
-
-</script>
+        }
+    </script>
 
 
 
@@ -153,37 +160,44 @@ div#test{ border:#000 1px solid; padding:10px 40px 40px 40px;margin-right:2%; }
 
 
 
-    
+
 </head>
 
-       <div class="topnav">
-        <div class='container'>
-                <div class="align-left">HKCL OES</div>
-                <div class="align-right">HS-CIT Final Exam 2018</div>
-                <p class="caption">Education website</p>
-                </div>
-</div>
+<div class="topnav">
+    <div class='container'>
+        <div class="align-left">HKCL OES</div>
+        <div class="align-right">HS-CIT Final Exam 2018</div>
+        <p class="caption">Education website</p>
+    </div>
+</div>
 
 <body>
     <form id="form1" runat="server">
-    <div>
+        <div>
 
-<div class="grid">
-   <div class="box1">
-       
-           <div class="qt">Question No.25<span class="view">View In</span>
-        <div class="select-style">
-                
-                <select id="selection">
-                  <option value="eng">English</option>
-                  <option value="ind">Indian</option>
-                  <option value="chi">Chinese</option>
-                </select> 
-               
-        </div> 
-        <br/><br/><hr/><br/><br/><br/><br/>
+            <div class="grid">
+                <div class="box1">
 
-      <%--  <div class="question"><p>A______put some question here?</p><br/><br/><br/><br/>
+                    <div class="qt">
+                        Question No.25<span class="view">View In</span>
+                        <div class="select-style">
+
+                            <select id="selection">
+                                <option value="eng">English</option>
+                                <option value="ind">Indian</option>
+                                <option value="chi">Chinese</option>
+                            </select>
+
+                        </div>
+                        <br />
+                        <br />
+                        <hr />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+
+                        <%--  <div class="question"><p>A______put some question here?</p><br/><br/><br/><br/>
        
         <input type="radio" name="answer" value="first" checked="checked"/> first option<br/><br/>
         <input type="radio" name="answer" value="second"/> second option<br/><br/>
@@ -192,31 +206,51 @@ div#test{ border:#000 1px solid; padding:10px 40px 40px 40px;margin-right:2%; }
        
         </div> --%>
 
-<h2 id="test_status"></h2>
-<div id="test"></div>
-               <asp:Button ID="Button1"  runat="server" Text="Button"  onclientclick="return false;" />
+                        <h2 id="test_status"></h2>
+                        <div id="test"></div>
+                        <asp:Button ID="Button1" runat="server" Text="Button" OnClientClick="return false;" />
 
 
 
 
 
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-       <%-- <button type="submit" class="btn">Submit & Next</button> --%>  
-</div>
-</div>                        
-   <div class="box2"><p class="uname">User : <strong>username1122</strong></p></div>
-   <div class="box3"><p class="numq">Number of Questions : <strong>50</strong></p>
-        <hr/>
-        <button id="btn2">20</button><span class=text>&nbspAnswer</span>
-        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <%-- <button type="submit" class="btn">Submit & Next</button> --%>
+                    </div>
+                </div>
+                <div class="box2">
+                    <p class="uname">User : <strong>username1122</strong></p>
+                </div>
+                <div class="box3">
+                    <p class="numq">
+                        Number of Questions : <strong>
+                            <label id="QuestionsCountLabel" runat="server" />
+                        </strong>
+                    </p>
+                    <hr />
+                    <button id="btn2">20</button><span class="text">&nbspAnswer</span>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <button id="btn3">8</button><sapn class="text">&nbspNot answered</sapn>
-        <br/><br/><br>
-        <button id="btn4">22</button><span class="text">&nbspnot visted</span>
+                    <br />
+                    <br />
+                    <br>
+                    <button id="btn4">22</button><span class="text">&nbspnot visted</span>
 
-</div> 
-        <div class="box4">
-                <div class="btn-no">
-                <button type="button" class="number-green">1</button>
+                </div>
+                <div class="box4">
+                    <div class="btn-no">
+                        <%--<button type="button" class="number-green">1</button>
                 <button type="button" class="number-green">2</button>
                 <button type="button" class="number-green">3</button>
                 <button type="button" class="number-green">4</button>
@@ -251,8 +285,8 @@ div#test{ border:#000 1px solid; padding:10px 40px 40px 40px;margin-right:2%; }
                 <button type="button" class="number">33</button>
                 <button type="button" class="number">34</button>
                 <button type="button" class="number">35</button>
-                <button type="button" class="number">36</button>
-                <%--<button class="number">37</button>
+                <button type="button" class="number">36</button>--%>
+                        <%--<button class="number">37</button>
                 <button class="number">38</button>
                 <button class="number">39</button>
                 <button class="number">40</button>
@@ -266,21 +300,24 @@ div#test{ border:#000 1px solid; padding:10px 40px 40px 40px;margin-right:2%; }
                 <button class="number">48</button>
                 <button class="number">49</button>
                 <button class="number">50</button>--%>
-                </div>
-                <br/><br/><hr/><br/>
-                <div class="btn-final">
+                    </div>
+                    <br />
+                    <br />
+                    <hr />
+                    <br />
+                    <div class="btn-final">
                         <button type="submit" class="btn">Submit & Next</button>
                         <button type="submit" class="btn">Submit & Next</button><br>
                         <button type="submit" class="btn-org">Submit & Next</button>
-                        </div>    
-        </div>
-</div>
-
+                    </div>
+                </div>
+            </div>
 
 
- <%--<h2 id="test_status"></h2>
+
+            <%--<h2 id="test_status"></h2>
 <div id="test"></div>--%>
-    </div>
+        </div>
     </form>
 </body>
 </html>
