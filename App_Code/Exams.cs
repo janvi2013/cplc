@@ -13,4 +13,5 @@ public class Exams
     public String Option3 { get; set; }
     public String Option4 { get; set; }
     public String QuestionAnswer { get; set; }
+    public String SelectedAnswer { get; set; }
 }

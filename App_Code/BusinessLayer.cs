@@ -1011,10 +1011,34 @@ namespace nscomputerpoint
         }
 
 
+        public DataTable ExamLogin()
+        {
+            if (con.State == ConnectionState.Broken)
+            {
+                con.Open();
+            }
+
+            try
+            {
+
+
+                SqlDataAdapter adp = new SqlDataAdapter("examlogin", con);
+                DataSet ds = new DataSet();
+                adp.Fill(ds);
+                return ds.Tables[0];
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
 
         public DataTable GetSearchRecord()
         {
-            if (con.State == ConnectionState.Broken)
+            if (con.State == ConnectionState.Closed)
             {
                 con.Open();
             }

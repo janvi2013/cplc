@@ -28,35 +28,90 @@
 
 
     <script type="text/javascript">
+        debugger;
 
         var questions;
-        var pos = 0, curr_pos =0, test, test_status, question, choice, choices, chA, chB, chC, chD, correct = 0;
+        var pos = 0, curr_pos = 0, test, test_status, question, choice, choices, chA, chB, chC, chD, correct = 0;
+               var mins = '<%=Session["time"]%>'
+                var secs = mins * 60;
+                var currentSeconds = 0;
+                var currentMinutes = 0;
+                var ourtimer;
+                
+                function StartCountDown() {
+                    debugger;
+                    ourtimer = setTimeout(Decrement, 1000);
+                }
 
-        $(document).ready(function () {
+                function EndCountDown() {
+                    debugger;
+                    clearTimeout(ourtimer);
+                }
+       
+                function myCurrentDay()
+                {
+                    var d = new Date();
+                    var weekday = new Array(7);
+                    weekday[0] = "Sunday";
+                    weekday[1] = "Monday";
+                    weekday[2] = "Tuesday";
+                    weekday[3] = "Wednesday";
+                    weekday[4] = "Thursday";
+                    weekday[5] = "Friday";
+                    weekday[6] = "Saturday";
+                    var Day = weekday[d.getDay()];
+                    document.getElementById("currentday").innerHTML = Day;
+                    
+                }
+                $(document).ready(function () {
+                    myCurrentDay();
+
+                    var fullDate = new Date()
+                    var n = fullDate.getDay();                 
+                   
+                    //Thu May 19 2011 17:25:38 GMT+1000 {}
+
+                    //convert month to 2 digits
+                    var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
+                    
+                    var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
+                    document.getElementById("currentdate").innerHTML = currentDate;
+                  StartCountDown();
+           
             var totalQuestions = 0;
             totalQuestions = parseInt($("#QuestionsCountLabel").text());
-
+            
             for (var i = 1; i <= totalQuestions; i++) {
-                $('.btn-no').append($('<button/>').attr("id", "button_" + i).attr("onclick","renderQuestionFromSidePanel(" + i + ");return false;").addClass('number').text(i).css({'cursor': 'pointer'}));
+               
+                $('.btn-no').append($('<button/>').attr("id", "button_" + i).attr("onclick", "renderQuestionFromSidePanel(" + i + ");return false;").addClass('number').text(i).css({ 'cursor': 'pointer' }));
+                
             }
+           
             GetQuestions();
-            
-            
-            $("#Button1").click(function () {
+
+
+
+            $("#btnnext").click(function () {
+                debugger;
+
+                var exactanswer = questions[pos]["QuestionAnswer"];
 
                 choices = document.getElementsByName("choices");
                 for (var i = 0; i < choices.length; i++) {
                     if (choices[i].checked) {
-                        choice = choices[i].value;
+                        alert("Not click on Answer to skip questions, click on Save & Next to continue !");
+                        return false;
+                       // choice = choices[i].value;
                     }
                 }
-                if (choice == questions[pos]["QuestionAnswer"]) {
+                if (choice == exactanswer) {
                     correct++;
                 }
 
                 pos++;
                 if ($("input[name='choices']:checked").val()) {
                     $("#button_" + pos).css("background-color", "#00cc99");
+                    questions[pos - 1]["SelectedAnswer"] = $("input[name='choices']:checked").val();
                 }
                 else {
                     $("#button_" + pos).css("background-color", "#ff8533");
@@ -64,16 +119,77 @@
                 curr_pos++;
                 renderQuestion();
 
+
             });
+            
+            
+            $("#Button1").click(function () {
+                debugger;
+               
+                var exactanswer = questions[pos]["QuestionAnswer"];
+
+                choices = document.getElementsByName("choices");
+                for (var i = 0; i < choices.length; i++) {
+                    if (choices[i].checked) {
+                        choice = choices[i].value;
+                    }
+                   
+                }
+                if (choice == exactanswer) {
+                    correct++;
+                }
+
+                pos++;
+                if ($("input[name='choices']:checked").val()) {
+                    $("#button_" + pos).css("background-color", "#00cc99");
+                    questions[pos - 1]["SelectedAnswer"] = $("input[name='choices']:checked").val();
+                }
+                else {
+                    $("#button_" + pos).css("background-color", "#ff8533");
+                }
+                curr_pos++;
+                renderQuestion();
+                
+                
+            });
+
         });
+
+
+
+       
+       
+
+        function Decrement() {
+            
+            currentMinutes = Math.floor(secs / 60);
+            currentSeconds = secs % 60;
+            if (currentSeconds <= 9) currentSeconds = "0" + currentSeconds;
+            secs--;
+            document.getElementById("timerText").innerHTML = "Time Remaining :" + currentMinutes + ":" + currentSeconds;
+            if (secs !== -1) {
+                setTimeout('Decrement()', 1000);
+
+            }
+            else {
+                alert("Sorry, Your Time Has Been Expired...");
+                window.location.href = "login.aspx?timeout=1"
+
+            }
+        }
+
 
         function renderQuestion() {
             debugger;
 
             test = $("#test");
-            if (curr_pos >= questions.length) {
-                test.html("<h2>You got " + correct + " of " + questions.length + " questions correct</h2>");
+            if (curr_pos >= questions.length) {              
+                           
+                $("#timerText").css("display", "none");
+                test.html("<h2>Your score is " + correct + "&nbsp;" + "out of" + "&nbsp;" + questions.length + "</h2>");
                 $("#test_status").html("Test Completed");
+                EndCountDown();
+               
                 pos = 0;
                 correct = 0;
                 return false;
@@ -84,20 +200,28 @@
             chB = questions[curr_pos]["Option2"];
             chC = questions[curr_pos]["Option3"];
             chD = questions[curr_pos]["Option4"];
-            test.html( "<h3>" + question + "</h3>" +
-            "<input type='radio' name='choices' value='A'> " + chA + "<br>" +
-            "<input type='radio' name='choices' value='B'> " + chB + "<br>" +
-            "<input type='radio' name='choices' value='C'> " + chC + "<br>" +
-            "<input type='radio' name='choices' value='D'> " + chD + "<br><br>" +
-            "<button class='btn' type='button' onclick='checkAnswer()' >Save & Next</button>");
+            test.html("<p>" + question + "</p>" +
+            "<input type='radio' id='RadioA' name='choices' value='A'>" + chA + "<br>" +
+            "<input type='radio' id='RadioB' name='choices' value='B'> " + chB + "<br>" +
+            "<input type='radio' id='RadioC' name='choices' value='C'> " + chC + "<br>" +
+            "<input type='radio' id='RadioD' name='choices' value='D'> " + chD + "<br><br>");
+            //"<button class='btn'  type='button' onclick='checkAnswer()' >Save & Next</button>");
+
+            if (questions[curr_pos]["SelectedAnswer"] && questions[curr_pos]["SelectedAnswer"] != '')
+            {
+                $("#Radio" + questions[curr_pos]["SelectedAnswer"]).attr('checked', 'checked');
+            }
         }
 
         function renderQuestionFromSidePanel(index) {            
             curr_pos = index - 1;
-            renderQuestion();
             pos++;
             if ($("input[name='choices']:checked").val()) {
-                $("#button_" + pos).css("background-color", "#00cc99");
+                questions[pos - 1]["SelectedAnswer"] = $("input[name='choices']:checked").val()
+            }
+            renderQuestion();                        
+            if (questions[pos - 1]["SelectedAnswer"] && questions[pos - 1]["SelectedAnswer"] != '') {
+                $("#button_" + pos).css("background-color", "#00cc99");                
             }
             else {
                 $("#button_" + pos).css("background-color", "#ff8533");
@@ -144,29 +268,12 @@
         }
     </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </head>
 
 <div class="topnav">
     <div class='container'>
-        <div class="align-left">HKCL OES</div>
-        <div class="align-right">HS-CIT Final Exam 2018</div>
+        <div class="align-left">CPITM OES</div>
+        <div class="align-right">WELCOME COMPUTER POINT</div>
         <p class="caption">Education website</p>
     </div>
 </div>
@@ -179,8 +286,10 @@
                 <div class="box1">
 
                     <div class="qt">
-                        Question No.25<span class="view">View In</span>
-                        <div class="select-style">
+                     <span id="currentday" ></span> :
+                        <span id="currentdate"></span>
+                        <span id="timerText" class="view"></span>
+                        <%--<div class="select-style">
 
                             <select id="selection">
                                 <option value="eng">English</option>
@@ -188,12 +297,10 @@
                                 <option value="chi">Chinese</option>
                             </select>
 
-                        </div>
-                        <br />
-                        <br />
+                        </div>--%>
+                       
                         <hr />
-                        <br />
-                        <br />
+                        
                         <br />
                         <br />
 
@@ -206,10 +313,10 @@
        
         </div> --%>
 
-                        <h2 id="test_status"></h2>
-                        <div id="test"></div>
-                        <asp:Button ID="Button1" runat="server" Text="Button" OnClientClick="return false;" />
-
+                        <p style="color:red" id="test_status"></p>
+                        <div id="test" style="border:none;font"></div>
+                        <asp:Button ID="Button1" CssClass="btn" runat="server" Text="Save & Next" OnClientClick="return false;" />
+                         <asp:Button ID="btnnext" CssClass="btn" runat="server" Text="Skip Question" OnClientClick="return false;" />
 
 
 
@@ -230,7 +337,9 @@
                     </div>
                 </div>
                 <div class="box2">
-                    <p class="uname">User : <strong>username1122</strong></p>
+                    <asp:Button ID="logout" runat="server"  CssClass="btn-logout" Text="Logout" OnClick="logout_Click"/>
+                    <p class="uname">User : </p><strong><asp:label id="lblusername" runat="server" style="color:red"></asp:label></strong>
+                   
                 </div>
                 <div class="box3">
                     <p class="numq">
@@ -247,9 +356,11 @@
                     <br>
                     <button id="btn4">22</button><span class="text">&nbspnot visted</span>
 
+                    
+
                 </div>
                 <div class="box4">
-                    <div class="btn-no">
+                    <div class="btn-no" style="overflow-y:scroll">
                         <%--<button type="button" class="number-green">1</button>
                 <button type="button" class="number-green">2</button>
                 <button type="button" class="number-green">3</button>
@@ -306,9 +417,9 @@
                     <hr />
                     <br />
                     <div class="btn-final">
-                        <button type="submit" class="btn">Submit & Next</button>
+                       <%-- <button type="submit" class="btn">Submit & Next</button>
                         <button type="submit" class="btn">Submit & Next</button><br>
-                        <button type="submit" class="btn-org">Submit & Next</button>
+                        <button type="submit" class="btn-org">Submit & Next</button>--%>
                     </div>
                 </div>
             </div>

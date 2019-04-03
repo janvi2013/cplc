@@ -31,11 +31,22 @@
 
 
 
-        <p>Student Login</p><br/>
+        <p>Student Login
+                  
+        </p><br/>
+                
         <div class="input-container">
+           
              <i class="fa fa-user icon"></i>
             <%-- <input class="input-field" type="text" placeholder="Username" name="usrnm"/>--%>
-            <asp:TextBox ID="txtuser" runat="server" CssClass="input-field "  ></asp:TextBox>
+                        <asp:TextBox ID="txtuser" runat="server" CssClass="input-field "  ></asp:TextBox>
+              <asp:Label ID="lblerror" runat="server" ForeColor="Red" Font-Size="Medium"></asp:Label> &nbsp;&nbsp
+
+            <asp:RegularExpressionValidator ID="RegularExpressionValidator1"
+    ControlToValidate="txtuser" runat="server"
+    ErrorMessage="Only Numbers allowed" ForeColor="Red"
+    ValidationExpression="\d+">
+</asp:RegularExpressionValidator>
 
         </div>
        <div class="input-container">
@@ -62,14 +73,14 @@
 
 
 
-
+          
         </div>
         <%--<button type="submit" class="btn">Login</button>--%>
 
 
-                  <asp:Label ID="lblerror" runat="server" ForeColor="Red" Font-Size="Medium"></asp:Label>
+               
         <asp:Button ID="Button1" runat="server" Text="Login" CssClass="btn" OnClick="Button1_Click" />
-
+                   
 
  </ContentTemplate>
 

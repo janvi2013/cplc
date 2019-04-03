@@ -8,14 +8,19 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using nscomputerpoint;
+using System.Drawing;
 
 public partial class exams_login : System.Web.UI.Page
 {
     Int32 time;
     DataSet ds = new DataSet();
+    DataTable examlogin = new DataTable();
     DataTable dt = new DataTable();
     DataTable DOBdt = new DataTable();
     SqlConnection con = new SqlConnection();
+    string myname;
+    nscomputerpoint.clscomputerpoint obj = new nscomputerpoint.clscomputerpoint();
+    nscomputerpoint.clsstudentadmissionprp objprp = new nscomputerpoint.clsstudentadmissionprp();
     protected void Page_Load(object sender, EventArgs e)
     {
         con.ConnectionString = ConfigurationManager.ConnectionStrings["cn"].ConnectionString;
@@ -24,6 +29,11 @@ public partial class exams_login : System.Web.UI.Page
             con.Open();
         }
 
+        if(Page.IsPostBack==false)
+        {
+
+           // lblerror.Visible = false;
+        }
     }
 
     protected void Button1_Click(object sender, EventArgs e)
@@ -60,9 +70,36 @@ public partial class exams_login : System.Web.UI.Page
         if (dt.Rows.Count > 0)
         {
             Session["examtable"] = dt;
-            time = 1;
+            time = 50;
             Session["time"] = time;
-            Response.Redirect("exam.aspx");
+
+            examlogin = obj.ExamLogin();
+            
+            var id = examlogin.AsEnumerable().Select(r => r.Field<int>("id")).ToList();
+            for(int i=0;i<id.Count;i++)
+            {
+                var counts = id[i];
+                Session["id"] = counts;
+
+
+                //var names = from name in examlogin.AsEnumerable()
+                //            where name.Field<int>("id") == counts
+                //            select new
+                //            {
+                //                names = name.Field<string>("student")
+                //            };
+
+                if (txtuser.Text==counts.ToString())
+                {
+                   // Session["names"] = names;
+                    Response.Redirect("exam.aspx");
+                }
+                else
+                {
+                    lblerror.Text = "Sorry, Wrong Student Registration ID !";
+                    lblerror.ForeColor = Color.Red;
+                }
+            }
         }
         else
         {

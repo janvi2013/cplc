@@ -134,14 +134,9 @@
 
                 //Set the number of minutes you need
                 var mins = '<%=Session["time"]%>'
-
-
-
-
                 var secs = mins * 60;
                 var currentSeconds = 0;
                 var currentMinutes = 0;
-
                 var ourtimer;
                 function StartCountDown() {
                     ourtimer = setTimeout(Decrement, 1000);
@@ -149,6 +144,7 @@
 
                 function EndCountDown() {
                     clearTimeout(ourtimer);
+                   
                 }
 
                 $(document).ready(function () { StartCountDown(); }); //start the countdown

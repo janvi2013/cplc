@@ -6,18 +6,28 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Web.Services;
 using System.Web.Script.Serialization;
+using nscomputerpoint;
 
 
 public partial class exams_Default : System.Web.UI.Page
 {
     DataTable dt = new DataTable();
 
+    String username = string.Empty;
+    nscomputerpoint.clscomputerpoint obj = new nscomputerpoint.clscomputerpoint();
+    nscomputerpoint.clsstudentadmissionprp objprp = new nscomputerpoint.clsstudentadmissionprp();
+    DataTable examlogin = new DataTable();
 
 
     protected void Page_Load(object sender, EventArgs e)
     {
+
+        
         if (HttpContext.Current.Session["examtable"] != null)
         {
+
+             
+
             DataTable dt = HttpContext.Current.Session["examtable"] as DataTable;
             QuestionsCountLabel.InnerText = Convert.ToString(dt.Rows.Count);
         }
@@ -70,4 +80,9 @@ public partial class exams_Default : System.Web.UI.Page
 
 
 
+
+    protected void logout_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("~/exams/login.aspx");
+    }
 }

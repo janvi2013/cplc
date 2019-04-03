@@ -1,6 +1,7 @@
 body {
     background-color: #e6f2ff;
     width: 100%;
+    /*position:fixed;*/
 }
 .topnav {
     background-color: #00b8e6;
@@ -39,10 +40,10 @@ body {
 
 }
 .grid {
-    margin-top: 160px;
+    margin-top: 60px;
     display: grid;
     grid-template-columns: 2fr 1fr;
-    grid-template-rows: 0fr 0.6fr 1.5fr 0.5fr;
+    grid-template-rows: 0fr 0fr 0fr 0fr;
     grid-gap: 1em;
 }
 .box1 {
@@ -71,7 +72,7 @@ hr {
     width: 97%;
     }
 .view {
-    padding-left: 42em;
+    padding-left: 33em;
 }
 .select-style {
     float: right;
@@ -102,11 +103,21 @@ hr {
     font-family:'Franklin Gothic Medium', 'Arial bold', Arial, sans-serif;
     border-radius: 6px;   
 }
+.btn-logout{
+   padding: 7px;
+    background-color:#F94B29;
+    color: white;
+    margin-left:82%;
+    font-size: 1em;
+    font-family:'Franklin Gothic Medium', 'Arial bold', Arial, sans-serif;
+    border-radius: 6px;
+}
 .box2 {
     height: 100%;
 }
 .box3 {
     height: 100%;
+    line-height: 0.2em;
 }
 .uname {
     padding-bottom: 2px;
@@ -154,9 +165,9 @@ hr {
     display: grid;
     grid-template-columns: 0.1fr 0.1fr 0.1fr 0.1fr 0.1fr 0.1fr 0.1fr; 
     grid-template-rows: 0.1fr 0.1fr 0.1fr 0.1fr 0.1fr 0.1fr 0.1fr 0.1fr;
-    grid-gap: 0em;
+    grid-gap: 0.3em;
     height: 100%; 
-    padding: 1em 0em 0em 2em;
+    padding: 1em 0em 0em 1.5em;
       
 }
 .btn-final {
