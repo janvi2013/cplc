@@ -43,6 +43,12 @@
                     ourtimer = setTimeout(Decrement, 1000);
                 }
 
+                function EndTest() {                   
+                    secs = 15;
+                    test.html("<h2>Your score is " + correct + "&nbsp;" + "out of" + "&nbsp;" + questions.length + "</h2>");
+                    $("#test_status").html("Test Completed");                   
+                }
+                
                 function EndCountDown() {
                     debugger;
                     clearTimeout(ourtimer);
@@ -184,12 +190,12 @@
 
             test = $("#test");
             if (curr_pos >= questions.length) {              
-                           
-                $("#timerText").css("display", "none");
+                 
+                //$("#timerText").css("display", "none");
                 test.html("<h2>Your score is " + correct + "&nbsp;" + "out of" + "&nbsp;" + questions.length + "</h2>");
                 $("#test_status").html("Test Completed");
-                EndCountDown();
-               
+                //EndCountDown();
+                EndTest();
                 pos = 0;
                 correct = 0;
                 return false;
@@ -210,6 +216,7 @@
             if (questions[curr_pos]["SelectedAnswer"] && questions[curr_pos]["SelectedAnswer"] != '')
             {
                 $("#Radio" + questions[curr_pos]["SelectedAnswer"]).attr('checked', 'checked');
+                $("input[name='choices']").attr('disabled', 'disabled');
             }
         }
 
@@ -417,9 +424,7 @@
                     <hr />
                     <br />
                     <div class="btn-final">
-                       <%-- <button type="submit" class="btn">Submit & Next</button>
-                        <button type="submit" class="btn">Submit & Next</button><br>
-                        <button type="submit" class="btn-org">Submit & Next</button>--%>
+                        <input type="button" class="btn" onclick="EndTest();" value="End Test" />                        
                     </div>
                 </div>
             </div>
