@@ -124,7 +124,7 @@ public partial class exams_Default : System.Web.UI.Page
     }
 
     [WebMethod(enableSession:true)]
-    public static String FetchStudentDetails()
+    public static String FetchStudentDetails(string examname, string obmarks, string totalmarks)
     {
         SqlConnection cons = new SqlConnection();
         cons.ConnectionString = ConfigurationManager.ConnectionStrings["cn"].ConnectionString;
@@ -142,7 +142,7 @@ public partial class exams_Default : System.Web.UI.Page
             SqlDataAdapter adp = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             adp.Fill(dt);
-            List<StudentDetails> list = new List<StudentDetails>();
+            //List<StudentDetails> list = new List<StudentDetails>();
             StudentDetails details = new StudentDetails();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -156,11 +156,25 @@ public partial class exams_Default : System.Web.UI.Page
                 //  details.obtainedmarks = Convert.ToInt64(dt.Rows[i]["obtainedmarks"]);
                 // details.totalmarks = Convert.ToInt64(dt.Rows[i]["totalmarks"]);
                 details.currentdate = currentdate;
-                list.Add(details);
+                //list.Add(details);
             }
-            string myJsonString = (new JavaScriptSerializer()).Serialize(details);
-            return myJsonString;
 
+            SqlCommand cmd1 = new SqlCommand("InsertStudentExamDetails", cons);
+            cmd1.CommandType = CommandType.StoredProcedure;
+            cmd1.Parameters.Add("@id", SqlDbType.Int).Value = details.id;
+            cmd1.Parameters.Add("@exam", SqlDbType.NVarChar).Value = examname;
+            cmd1.Parameters.Add("@obtainedmarks", SqlDbType.Int).Value = obmarks;
+            cmd1.Parameters.Add("@totalmarks", SqlDbType.Int).Value = totalmarks;
+            cmd1.Parameters.Add("@currentdate", SqlDbType.VarChar, 100).Value = currentdate;
+
+            cmd1.ExecuteNonQuery();
+            cmd1.Dispose();
+
+
+            cons.Close();
+
+
+            return string.Empty;
         }
         else
         {

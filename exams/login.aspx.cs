@@ -98,7 +98,7 @@ public partial class exams_login : System.Web.UI.Page
                 if (txtuser.Text==counts.ToString())
                 {
                    // Session["names"] = names;
-                    Response.Redirect("exam.aspx");
+                    Response.Redirect("exam.aspx?exam=" + Session["ExamName"]);
                 }
                 else
                 {
