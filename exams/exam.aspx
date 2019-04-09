@@ -32,6 +32,9 @@
 
         var questions;
         var pos = 0, curr_pos = 0, test, test_status, question, choice, choices, chA, chB, chC, chD, correct = 0;
+
+          
+
                var mins = '<%=Session["time"]%>'
                 var secs = mins * 60;
                 var currentSeconds = 0;
@@ -43,11 +46,24 @@
                     ourtimer = setTimeout(Decrement, 1000);
                 }
 
-                function EndTest() {                   
+                function EndTest() {
+                    debugger;
                     secs = 15;
                     test.html("<h2>Your score is " + correct + "&nbsp;" + "out of" + "&nbsp;" + questions.length + "</h2>");
-                    $("#test_status").html("Test Completed");                   
+                   // var hiddenControl = '<%= hiddenscore.ClientID %>';
+                    //document.getElementById(hiddenControl).value = correct;
+                   
+                    $("#test_status").html("Test Completed");
+                    $("#btnno").hide();
+                    $("#Button1").prop('disabled', true);
+                    $("#btnnext").prop('disabled', true);
+                    $("#btnEndTest").prop('disabled', true);
+                    $("#ptest_ended").html("You Have Ended Your Test ! Contact Your HOD For Your Details...");
+                    FetchStudentDetails();
+                     
+
                 }
+                
                 
                 function EndCountDown() {
                     debugger;
@@ -70,6 +86,8 @@
                     
                 }
                 $(document).ready(function () {
+                   
+
                     myCurrentDay();
 
                     var fullDate = new Date()
@@ -127,11 +145,18 @@
 
 
             });
+
+
+
+            //$("#EndTestbtn").click(function () {
+            //    EndTest();
+
+
+            //});
             
             
             $("#Button1").click(function () {
-                debugger;
-               
+                debugger;               
                 var exactanswer = questions[pos]["QuestionAnswer"];
 
                 choices = document.getElementsByName("choices");
@@ -193,6 +218,8 @@
                  
                 //$("#timerText").css("display", "none");
                 test.html("<h2>Your score is " + correct + "&nbsp;" + "out of" + "&nbsp;" + questions.length + "</h2>");
+                
+               
                 $("#test_status").html("Test Completed");
                 //EndCountDown();
                 EndTest();
@@ -236,9 +263,34 @@
             pos = curr_pos;
         }
 
+
+        function FetchStudentDetails() {
+            debugger;
+            $.ajax({
+                type: "POST",
+                url: "exam.aspx/FetchStudentDetails",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    var student = response.d;
+                    var studentdetails = JSON.parse(student);
+                    alert(studentdetails);
+
+                },
+                failure: function (response) {
+                    alert(response.d);
+                }
+
+            });
+
+        }
+
+
+
+
         function GetQuestions() {
             $.ajax({
-
                 type: "POST",
                 url: "exam.aspx/GetData",
                 contentType: "application/json; charset=utf-8",
@@ -248,23 +300,7 @@
                     var ds = response.d;                    
                     questions = JSON.parse(ds);
                     renderQuestion();                    
-                    //function checkAnswer() {
-                    //    debugger;
-
-                    //    choices = document.getElementsByName("choices");
-                    //    for (var i = 0; i < choices.length; i++) {
-                    //        if (choices[i].checked) {
-                    //            choice = choices[i].value;
-                    //        }
-                    //    }
-                    //    if (choice == questions[pos][4]) {
-                    //        correct++;
-                    //    }
-                    //    pos++;
-                    //    renderQuestion();
-
-
-                    //}               
+                            
                 },
                 failure: function (response) {
                     alert(response.d);
@@ -287,8 +323,11 @@
 
 <body>
     <form id="form1" runat="server">
+        <asp:ScriptManager ID="scrip1" runat="server"></asp:ScriptManager>
         <div>
-
+           
+            
+            
             <div class="grid">
                 <div class="box1">
 
@@ -322,7 +361,7 @@
 
                         <p style="color:red" id="test_status"></p>
                         <div id="test" style="border:none;font"></div>
-                        <asp:Button ID="Button1" CssClass="btn" runat="server" Text="Save & Next" OnClientClick="return false;" />
+                        <asp:Button ID="Button1" CssClass="btn" runat="server" Text="Save & Next" OnClientClick="return false;"  />
                          <asp:Button ID="btnnext" CssClass="btn" runat="server" Text="Skip Question" OnClientClick="return false;" />
 
 
@@ -345,7 +384,10 @@
                 </div>
                 <div class="box2">
                     <asp:Button ID="logout" runat="server"  CssClass="btn-logout" Text="Logout" OnClick="logout_Click"/>
-                    <p class="uname">User : </p><strong><asp:label id="lblusername" runat="server" style="color:red"></asp:label></strong>
+                   <%-- <p class="uname">User : </p>--%>
+                    
+                    
+                    <strong><asp:label id="lblusername" runat="server"  CssClass="uname"></asp:label></strong>
                    
                 </div>
                 <div class="box3">
@@ -355,19 +397,21 @@
                         </strong>
                     </p>
                     <hr />
-                    <button id="btn2">20</button><span class="text">&nbspAnswer</span>
+                   <%-- <button id="btn2">20</button><span class="text">&nbspAnswer</span>
                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <button id="btn3">8</button><sapn class="text">&nbspNot answered</sapn>
                     <br />
                     <br />
                     <br>
-                    <button id="btn4">22</button><span class="text">&nbspnot visted</span>
+                    <button id="btn4">22</button><span class="text">&nbspnot visted</span>--%>
 
                     
 
                 </div>
                 <div class="box4">
-                    <div class="btn-no" style="overflow-y:scroll">
+                     <label  style="color:red" id="ptest_ended"></label>
+                    <div id="btnno" class="btn-no" style="overflow-y:scroll">
+                      
                         <%--<button type="button" class="number-green">1</button>
                 <button type="button" class="number-green">2</button>
                 <button type="button" class="number-green">3</button>
@@ -424,16 +468,20 @@
                     <hr />
                     <br />
                     <div class="btn-final">
-                        <input type="button" class="btn" onclick="EndTest();" value="End Test" />                        
+                        <input type="button" id="btnEndTest" runat="server" class="btn" onclick="EndTest();" value="End Test" />     
+                       <%-- <asp:Button ID="EndTestbtn" runat="server" CssClass="btn" OnClick="EndTestbtn_Click"    Text="End Test" />--%>
+                        <input type="hidden" id="hiddenscore" runat="server" name="score" />                   
                     </div>
                 </div>
             </div>
 
 
-
             <%--<h2 id="test_status"></h2>
 <div id="test"></div>--%>
+
+        
         </div>
+
     </form>
 </body>
 </html>

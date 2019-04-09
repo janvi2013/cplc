@@ -20,7 +20,7 @@ public partial class exams_login : System.Web.UI.Page
     SqlConnection con = new SqlConnection();
     string myname;
     nscomputerpoint.clscomputerpoint obj = new nscomputerpoint.clscomputerpoint();
-    nscomputerpoint.clsstudentadmissionprp objprp = new nscomputerpoint.clsstudentadmissionprp();
+    nscomputerpoint.clsExamLoginprp objprp = new nscomputerpoint.clsExamLoginprp();
     protected void Page_Load(object sender, EventArgs e)
     {
         con.ConnectionString = ConfigurationManager.ConnectionStrings["cn"].ConnectionString;
@@ -31,13 +31,18 @@ public partial class exams_login : System.Web.UI.Page
 
         if(Page.IsPostBack==false)
         {
+           
 
-           // lblerror.Visible = false;
         }
     }
 
     protected void Button1_Click(object sender, EventArgs e)
     {
+
+        
+        String message = drpcourse.SelectedItem.Text;
+        Session["ExamName"] = null;
+        Session["ExamName"] = message;
 
         Session["examtable"] = null;
 
@@ -70,10 +75,11 @@ public partial class exams_login : System.Web.UI.Page
         if (dt.Rows.Count > 0)
         {
             Session["examtable"] = dt;
-            time = 50;
+            time = 60;
             Session["time"] = time;
 
-            examlogin = obj.ExamLogin();
+            objprp.P_sturegistrationid = Convert.ToInt32(txtuser.Text);
+            examlogin = obj.ExamLogin(objprp);
             
             var id = examlogin.AsEnumerable().Select(r => r.Field<int>("id")).ToList();
             for(int i=0;i<id.Count;i++)
@@ -130,6 +136,10 @@ public partial class exams_login : System.Web.UI.Page
 
     protected void drpcourse_SelectedIndexChanged(object sender, EventArgs e)
     {
+
+
+        String message = drpcourse.SelectedItem.Text + "--" + drpcourse.SelectedItem.Value;
+        ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('" + message + "');", true);
 
         if (drpcourse.SelectedItem.Text == "c")
         {

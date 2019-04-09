@@ -224,6 +224,33 @@ namespace nscomputerpoint
         }
 
     }
+
+    public interface intexamlogin
+    {
+        Int32 P_sturegistrationid
+        {
+            get;
+            set;
+
+        }
+    }
+    public class clsExamLoginprp : intexamlogin
+    {
+        Int32 sturegistrationid;
+        public int P_sturegistrationid
+        {
+           
+            get
+            {
+                return sturegistrationid;
+            }
+
+            set
+            {
+                sturegistrationid = value;
+            }
+        }
+    }
     public class clsCertificateDetailsprp : intCertificateDetails
     {
         Int32  stuchargesforcertificate;
@@ -1011,7 +1038,7 @@ namespace nscomputerpoint
         }
 
 
-        public DataTable ExamLogin()
+        public DataTable ExamLogin(clsExamLoginprp p)
         {
             if (con.State == ConnectionState.Broken)
             {
@@ -1021,11 +1048,13 @@ namespace nscomputerpoint
             try
             {
 
-
-                SqlDataAdapter adp = new SqlDataAdapter("examlogin", con);
-                DataSet ds = new DataSet();
-                adp.Fill(ds);
-                return ds.Tables[0];
+                SqlCommand cmd = new SqlCommand("examlogin",con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@sturegid", SqlDbType.Int).Value = p.P_sturegistrationid;
+                SqlDataAdapter adp = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                return dt;
             }
 
             catch (Exception ex)
