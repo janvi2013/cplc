@@ -50,8 +50,7 @@
             debugger;
             secs = 15;
             test.html("<h2>Your score is " + correct + "&nbsp;" + "out of" + "&nbsp;" + questions.length + "</h2>");
-            // var hiddenControl = '<%= hiddenscore.ClientID %>';
-                    //document.getElementById(hiddenControl).value = correct;
+           
 
                     $("#test_status").html("Test Completed");
                     $("#btnno").hide();
@@ -59,7 +58,7 @@
                     $("#btnnext").prop('disabled', true);
                     $("#btnEndTest").prop('disabled', true);
                     $("#ptest_ended").html("You Have Ended Your Test ! Contact Your HOD For Your Details...");
-                    //FetchStudentDetails();
+                    FetchStudentDetails();
 
 
                 }
@@ -127,9 +126,9 @@
                                 // choice = choices[i].value;
                             }
                         }
-                        if (choice == exactanswer) {
-                            correct++;
-                        }
+                        //if (choice == exactanswer) {
+                        //    correct++;
+                        //}
 
                         pos++;
                         if ($("input[name='choices']:checked").val()) {
@@ -145,14 +144,7 @@
 
                     });
 
-
-
-                    //$("#EndTestbtn").click(function () {
-                    //    EndTest();
-
-
-                    //});
-
+                   
 
                     $("#Button1").click(function () {
                         debugger;
@@ -202,8 +194,9 @@
 
                     }
                     else {
+                        debugger;
                         alert("Sorry, Your Time Has Been Expired...");
-                        FetchStudentDetails();
+                        //FetchStudentDetails();
                         window.location.href = "login.aspx?timeout=1"
 
                     }
@@ -264,6 +257,7 @@
 
 
                 function FetchStudentDetails() {
+                    debugger;
                     var obj = {};
                     obj.examname = '<%= Request.QueryString["exam"].ToString() %>';
             obj.obmarks = correct;
