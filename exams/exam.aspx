@@ -50,262 +50,267 @@
             debugger;
             secs = 15;
             test.html("<h2>Your score is " + correct + "&nbsp;" + "out of" + "&nbsp;" + questions.length + "</h2>");
-           
-
-                    $("#test_status").html("Test Completed");
-                    $("#btnno").hide();
-                    $("#Button1").prop('disabled', true);
-                    $("#btnnext").prop('disabled', true);
-                    $("#btnEndTest").prop('disabled', true);
-                    $("#ptest_ended").html("You Have Ended Your Test ! Contact Your HOD For Your Details...");
-                    FetchStudentDetails();
 
 
-                }
+            $("#test_status").html("Test Completed");
+            $("#btnno").hide();
+            $("#Button1").prop('disabled', true);
+            $("#btnnext").prop('disabled', true);
+            $("#btnEndTest").prop('disabled', true);
+            $("#ptest_ended").html("You Have Ended Your Test ! Contact Your HOD For Your Details...");
+            FetchStudentDetails();
 
 
-                function EndCountDown() {
-                    debugger;
-                    clearTimeout(ourtimer);
-                }
-
-                function myCurrentDay() {
-                    var d = new Date();
-                    var weekday = new Array(7);
-                    weekday[0] = "Sunday";
-                    weekday[1] = "Monday";
-                    weekday[2] = "Tuesday";
-                    weekday[3] = "Wednesday";
-                    weekday[4] = "Thursday";
-                    weekday[5] = "Friday";
-                    weekday[6] = "Saturday";
-                    var Day = weekday[d.getDay()];
-                    document.getElementById("currentday").innerHTML = Day;
-
-                }
-                $(document).ready(function () {
+        }
 
 
-                    myCurrentDay();
-
-                    var fullDate = new Date()
-                    var n = fullDate.getDay();
-
-                    //Thu May 19 2011 17:25:38 GMT+1000 {}
-
-                    //convert month to 2 digits
-                    var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
-
-                    var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
-                    document.getElementById("currentdate").innerHTML = currentDate;
-                    StartCountDown();
-
-                    var totalQuestions = 0;
-                    totalQuestions = parseInt($("#QuestionsCountLabel").text());
-
-                    for (var i = 1; i <= totalQuestions; i++) {
-
-                        $('.btn-no').append($('<button/>').attr("id", "button_" + i).attr("onclick", "renderQuestionFromSidePanel(" + i + ");return false;").addClass('number').text(i).css({ 'cursor': 'pointer' }));
-
-                    }
-
-                    GetQuestions();
-
-
-
-                    $("#btnnext").click(function () {
-                        debugger;
-
-                        var exactanswer = questions[pos]["QuestionAnswer"];
-
-                        choices = document.getElementsByName("choices");
-                        for (var i = 0; i < choices.length; i++) {
-                            if (choices[i].checked) {
-                                alert("Not click on Answer to skip questions, click on Save & Next to continue !");
-                                return false;
-                                // choice = choices[i].value;
-                            }
-                        }
-                        //if (choice == exactanswer) {
-                        //    correct++;
-                        //}
-
-                        pos++;
-                        if ($("input[name='choices']:checked").val()) {
-                            $("#button_" + pos).css("background-color", "#00cc99");
-                            questions[pos - 1]["SelectedAnswer"] = $("input[name='choices']:checked").val();
-                        }
-                        else {
-                            $("#button_" + pos).css("background-color", "#ff8533");
-                        }
-                        curr_pos++;
-                        renderQuestion();
-
-
-                    });
-
-                   
-
-                    $("#Button1").click(function () {
-                        debugger;
-                        var exactanswer = questions[pos]["QuestionAnswer"];
-
-                        choices = document.getElementsByName("choices");
-                        for (var i = 0; i < choices.length; i++) {
-                            if (choices[i].checked) {
-                                choice = choices[i].value;
-                            }
-
-                        }
-                        if (choice == exactanswer) {
-                            correct++;
-                        }
-
-                        pos++;
-                        if ($("input[name='choices']:checked").val()) {
-                            $("#button_" + pos).css("background-color", "#00cc99");
-                            questions[pos - 1]["SelectedAnswer"] = $("input[name='choices']:checked").val();
-                        }
-                        else {
-                            $("#button_" + pos).css("background-color", "#ff8533");
-                        }
-                        curr_pos++;
-                        renderQuestion();
-
-
-                    });
-
-                });
-
-
-
-
-
-
-                function Decrement() {
-
-                    currentMinutes = Math.floor(secs / 60);
-                    currentSeconds = secs % 60;
-                    if (currentSeconds <= 9) currentSeconds = "0" + currentSeconds;
-                    secs--;
-                    document.getElementById("timerText").innerHTML = "Time Remaining :" + currentMinutes + ":" + currentSeconds;
-                    if (secs !== -1) {
-                        setTimeout('Decrement()', 1000);
-
-                    }
-                    else {
-                        debugger;
-                        alert("Sorry, Your Time Has Been Expired...");
-                        //FetchStudentDetails();
-                        window.location.href = "login.aspx?timeout=1"
-
-                    }
-                }
-
-
-                function renderQuestion() {
-                    debugger;
-
-                    test = $("#test");
-                    if (curr_pos >= questions.length) {
-
-                        //$("#timerText").css("display", "none");
-                        test.html("<h2>Your score is " + correct + "&nbsp;" + "out of" + "&nbsp;" + questions.length + "</h2>");
-
-
-                        $("#test_status").html("Test Completed");
-                        //EndCountDown();
-                        EndTest();
-                        pos = 0;
-                        correct = 0;
-                        return false;
-                    }
-                    $("#test_status").html("Question " + (curr_pos + 1) + " of " + questions.length);
-                    question = questions[curr_pos]["Question"];
-                    chA = questions[curr_pos]["Option1"];
-                    chB = questions[curr_pos]["Option2"];
-                    chC = questions[curr_pos]["Option3"];
-                    chD = questions[curr_pos]["Option4"];
-                    test.html("<p>" + question + "</p>" +
-                    "<input type='radio' id='RadioA' name='choices' value='A'>" + chA + "<br>" +
-                    "<input type='radio' id='RadioB' name='choices' value='B'> " + chB + "<br>" +
-                    "<input type='radio' id='RadioC' name='choices' value='C'> " + chC + "<br>" +
-                    "<input type='radio' id='RadioD' name='choices' value='D'> " + chD + "<br><br>");
-                    //"<button class='btn'  type='button' onclick='checkAnswer()' >Save & Next</button>");
-
-                    if (questions[curr_pos]["SelectedAnswer"] && questions[curr_pos]["SelectedAnswer"] != '') {
-                        $("#Radio" + questions[curr_pos]["SelectedAnswer"]).attr('checked', 'checked');
-                        $("input[name='choices']").attr('disabled', 'disabled');
-                    }
-                }
-
-                function renderQuestionFromSidePanel(index) {
-                    curr_pos = index - 1;
-                    pos++;
-                    if ($("input[name='choices']:checked").val()) {
-                        questions[pos - 1]["SelectedAnswer"] = $("input[name='choices']:checked").val()
-                    }
-                    renderQuestion();
-                    if (questions[pos - 1]["SelectedAnswer"] && questions[pos - 1]["SelectedAnswer"] != '') {
-                        $("#button_" + pos).css("background-color", "#00cc99");
-                    }
-                    else {
-                        $("#button_" + pos).css("background-color", "#ff8533");
-                    }
-                    pos = curr_pos;
-                }
-
-
-                function FetchStudentDetails() {
-                    debugger;
-                    var obj = {};
-                    obj.examname = '<%= Request.QueryString["exam"].ToString() %>';
-            obj.obmarks = correct;
-            obj.totalmarks = questions.length;
+        function EndCountDown() {
             debugger;
-            $.ajax({
-                type: "POST",
-                url: "exam.aspx/FetchStudentDetails",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(obj),
-                dataType: "json",                
-                success: function (response) {
-                    var student = response.d;
-                    var studentdetails = JSON.parse(student);
-                    //alert(studentdetails);
+            clearTimeout(ourtimer);
+        }
 
-                },
-                failure: function (response) {
-                    alert(response.d);
+        function myCurrentDay() {
+            var d = new Date();
+            var weekday = new Array(7);
+            weekday[0] = "Sunday";
+            weekday[1] = "Monday";
+            weekday[2] = "Tuesday";
+            weekday[3] = "Wednesday";
+            weekday[4] = "Thursday";
+            weekday[5] = "Friday";
+            weekday[6] = "Saturday";
+            var Day = weekday[d.getDay()];
+            document.getElementById("currentday").innerHTML = Day;
+
+        }
+        $(document).ready(function () {
+
+
+            myCurrentDay();
+
+            var fullDate = new Date()
+            var n = fullDate.getDay();
+
+            //Thu May 19 2011 17:25:38 GMT+1000 {}
+
+            //convert month to 2 digits
+            var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
+
+            var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
+            document.getElementById("currentdate").innerHTML = currentDate;
+            StartCountDown();
+
+            var totalQuestions = 0;
+            totalQuestions = parseInt($("#QuestionsCountLabel").text());
+
+            for (var i = 1; i <= totalQuestions; i++) {
+
+                $('.btn-no').append($('<button/>').attr("id", "button_" + i).attr("onclick", "renderQuestionFromSidePanel(" + i + ");return false;").addClass('number').text(i).css({ 'cursor': 'pointer' }));
+
+            }
+
+            GetQuestions();
+
+
+
+            $("#btnnext").click(function () {
+                debugger;
+
+                var exactanswer = questions[pos]["QuestionAnswer"];
+
+                choices = document.getElementsByName("choices");
+                for (var i = 0; i < choices.length; i++) {
+                    if (choices[i].checked) {
+                        alert("Not click on Answer to skip questions, click on Save & Next to continue !");
+                        return false;
+                        // choice = choices[i].value;
+                    }
                 }
+                //if (choice == exactanswer) {
+                //    correct++;
+                //}
+
+                pos++;
+                if ($("input[name='choices']:checked").val()) {
+                    $("#button_" + pos).css("background-color", "#00cc99");
+                    questions[pos - 1]["SelectedAnswer"] = $("input[name='choices']:checked").val();
+                }
+                else {
+                    $("#button_" + pos).css("background-color", "#ff8533");
+                }
+                curr_pos++;
+                renderQuestion();
+
 
             });
 
-        }
 
 
+            $("#Button1").click(function () {
+                debugger;
+                var exactanswer = questions[pos]["QuestionAnswer"];
 
+                choices = document.getElementsByName("choices");
+                for (var i = 0; i < choices.length; i++) {
+                    if (choices[i].checked) {
+                        choice = choices[i].value;
+                    }
 
-        function GetQuestions() {
-            $.ajax({
-                type: "POST",
-                url: "exam.aspx/GetData",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                async: false,
-                success: function (response) {
-                    var ds = response.d;
-                    questions = JSON.parse(ds);
-                    renderQuestion();
-
-                },
-                failure: function (response) {
-                    alert(response.d);
                 }
+                if (choice == exactanswer && questions[pos]["SelectedAnswer"] == null) {
+                    correct++;
+                }
+
+                pos++;
+                if ($("input[name='choices']:checked").val()) {
+                    $("#button_" + pos).css("background-color", "#00cc99");
+                    questions[pos - 1]["SelectedAnswer"] = $("input[name='choices']:checked").val();
+                }
+                else {
+                    $("#button_" + pos).css("background-color", "#ff8533");
+                }
+                curr_pos++;
+                renderQuestion();
+
 
             });
 
+        });
+
+
+
+
+
+
+        function Decrement() {
+
+            currentMinutes = Math.floor(secs / 60);
+            currentSeconds = secs % 60;
+            if (currentSeconds <= 9) currentSeconds = "0" + currentSeconds;
+            secs--;
+            document.getElementById("timerText").innerHTML = "Time Remaining :" + currentMinutes + ":" + currentSeconds;
+            if (secs !== -1) {
+                setTimeout('Decrement()', 1000);
+
+            }
+            else {
+                debugger;
+                alert("Sorry, Your Time Has Been Expired...");
+                //FetchStudentDetails();
+                window.location.href = "login.aspx?timeout=1"
+
+            }
         }
+
+
+        function renderQuestion() {
+            debugger;
+
+            test = $("#test");
+            if (curr_pos >= questions.length) {
+
+                ////$("#timerText").css("display", "none");
+                //test.html("<h2>Your score is " + correct + "&nbsp;" + "out of" + "&nbsp;" + questions.length + "</h2>");
+
+
+                //$("#test_status").html("Test Completed");
+                ////EndCountDown();
+                //EndTest();
+                pos = 0;
+                //correct = 0;
+                //return false;
+                curr_pos = 0;
+            }
+            $("#test_status").html("Question " + (curr_pos + 1) + " of " + questions.length);
+            question = questions[curr_pos]["Question"];
+            chA = questions[curr_pos]["Option1"];
+            chB = questions[curr_pos]["Option2"];
+            chC = questions[curr_pos]["Option3"];
+            chD = questions[curr_pos]["Option4"];
+            test.html("<p>" + question + "</p>" +
+            "<input type='radio' id='RadioA' name='choices' value='A'>" + chA + "<br>" +
+            "<input type='radio' id='RadioB' name='choices' value='B'> " + chB + "<br>" +
+            "<input type='radio' id='RadioC' name='choices' value='C'> " + chC + "<br>" +
+            "<input type='radio' id='RadioD' name='choices' value='D'> " + chD + "<br><br>");
+            //"<button class='btn'  type='button' onclick='checkAnswer()' >Save & Next</button>");
+
+            if (questions[curr_pos]["SelectedAnswer"] && questions[curr_pos]["SelectedAnswer"] != '') {
+                $("#Radio" + questions[curr_pos]["SelectedAnswer"]).attr('checked', 'checked');
+                $("input[name='choices']").attr('disabled', 'disabled');
+            }
+        }
+
+        function renderQuestionFromSidePanel(index) {
+            curr_pos = index - 1;
+            pos++;
+            if ($("input[name='choices']:checked").val()) {
+                if ($("input[name='choices']:checked").val() == questions[pos - 1]["QuestionAnswer"] && questions[pos - 1]["SelectedAnswer"] == null) {
+                    correct++;
+                }
+                questions[pos - 1]["SelectedAnswer"] = $("input[name='choices']:checked").val()
+            }
+            
+            renderQuestion();
+            if (questions[pos - 1]["SelectedAnswer"] && questions[pos - 1]["SelectedAnswer"] != '') {
+                $("#button_" + pos).css("background-color", "#00cc99");
+            }
+            else {
+                $("#button_" + pos).css("background-color", "#ff8533");
+            }
+            pos = curr_pos;
+        }
+
+
+        function FetchStudentDetails() {
+            debugger;
+            var obj = {};
+            obj.examname = '<%= Request.QueryString["exam"].ToString() %>';
+                    obj.obmarks = correct;
+                    obj.totalmarks = questions.length;
+                    debugger;
+                    $.ajax({
+                        type: "POST",
+                        url: "exam.aspx/FetchStudentDetails",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(obj),
+                        dataType: "json",
+                        success: function (response) {
+                            var student = response.d;
+                            var studentdetails = JSON.parse(student);
+                            //alert(studentdetails);
+
+                        },
+                        failure: function (response) {
+                            alert(response.d);
+                        }
+
+                    });
+
+                }
+
+
+
+
+                function GetQuestions() {
+                    $.ajax({
+                        type: "POST",
+                        url: "exam.aspx/GetData",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        async: false,
+                        success: function (response) {
+                            var ds = response.d;
+                            questions = JSON.parse(ds);
+                            renderQuestion();
+
+                        },
+                        failure: function (response) {
+                            alert(response.d);
+                        }
+
+                    });
+
+                }
     </script>
 
 </head>
@@ -463,7 +468,7 @@
                     <hr />
                     <br />
                     <div class="btn-final">
-                        <input type="button" id="btnEndTest" runat="server" class="btn" onclick="EndTest();" value="End Test" />                        
+                        <input type="button" id="btnEndTest" runat="server" class="btn" onclick="EndTest();" value="End Test" />
                         <%-- <asp:Button ID="EndTestbtn" runat="server" CssClass="btn" OnClick="EndTestbtn_Click"    Text="End Test" />--%>
                         <input type="hidden" id="hiddenscore" runat="server" name="score" />
                     </div>
