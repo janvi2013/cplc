@@ -149,28 +149,30 @@
             $("#Button1").click(function () {
                 debugger;
                 var exactanswer = questions[pos]["QuestionAnswer"];
+                if ($("input[name='choices']:checked").val()) {
+                    choices = document.getElementsByName("choices");
+                    for (var i = 0; i < choices.length; i++) {
+                        if (choices[i].checked) {
+                            choice = choices[i].value;
+                        }
 
-                choices = document.getElementsByName("choices");
-                for (var i = 0; i < choices.length; i++) {
-                    if (choices[i].checked) {
-                        choice = choices[i].value;
+                    }
+                    if (choice == exactanswer && questions[pos]["SelectedAnswer"] == null) {
+                        correct++;
                     }
 
-                }
-                if (choice == exactanswer && questions[pos]["SelectedAnswer"] == null) {
-                    correct++;
-                }
+                    pos++;
 
-                pos++;
-                if ($("input[name='choices']:checked").val()) {
                     $("#button_" + pos).css("background-color", "#00cc99");
                     questions[pos - 1]["SelectedAnswer"] = $("input[name='choices']:checked").val();
+                    curr_pos++;
+                    renderQuestion();
                 }
+
                 else {
-                    $("#button_" + pos).css("background-color", "#ff8533");
+                    //$("#button_" + pos).css("background-color", "#ff8533");
+                    alert("If you want to skip th question then click on skip button.")
                 }
-                curr_pos++;
-                renderQuestion();
 
 
             });
@@ -249,7 +251,7 @@
                 }
                 questions[pos - 1]["SelectedAnswer"] = $("input[name='choices']:checked").val()
             }
-            
+
             renderQuestion();
             if (questions[pos - 1]["SelectedAnswer"] && questions[pos - 1]["SelectedAnswer"] != '') {
                 $("#button_" + pos).css("background-color", "#00cc99");
@@ -265,52 +267,52 @@
             debugger;
             var obj = {};
             obj.examname = '<%= Request.QueryString["exam"].ToString() %>';
-                    obj.obmarks = correct;
-                    obj.totalmarks = questions.length;
-                    debugger;
-                    $.ajax({
-                        type: "POST",
-                        url: "exam.aspx/FetchStudentDetails",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(obj),
-                        dataType: "json",
-                        success: function (response) {
-                            var student = response.d;
-                            var studentdetails = JSON.parse(student);
-                            //alert(studentdetails);
+            obj.obmarks = correct;
+            obj.totalmarks = questions.length;
+            debugger;
+            $.ajax({
+                type: "POST",
+                url: "exam.aspx/FetchStudentDetails",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(obj),
+                dataType: "json",
+                success: function (response) {
+                    var student = response.d;
+                    var studentdetails = JSON.parse(student);
+                    //alert(studentdetails);
 
-                        },
-                        failure: function (response) {
-                            alert(response.d);
-                        }
-
-                    });
-
+                },
+                failure: function (response) {
+                    alert(response.d);
                 }
 
+            });
+
+        }
 
 
 
-                function GetQuestions() {
-                    $.ajax({
-                        type: "POST",
-                        url: "exam.aspx/GetData",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        async: false,
-                        success: function (response) {
-                            var ds = response.d;
-                            questions = JSON.parse(ds);
-                            renderQuestion();
 
-                        },
-                        failure: function (response) {
-                            alert(response.d);
-                        }
+        function GetQuestions() {
+            $.ajax({
+                type: "POST",
+                url: "exam.aspx/GetData",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    var ds = response.d;
+                    questions = JSON.parse(ds);
+                    renderQuestion();
 
-                    });
-
+                },
+                failure: function (response) {
+                    alert(response.d);
                 }
+
+            });
+
+        }
     </script>
 
 </head>
