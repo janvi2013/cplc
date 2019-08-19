@@ -48,16 +48,8 @@
 
         function EndTest() {
             debugger;
-            secs = 15;
-            test.html("<h2>Your score is " + correct + "&nbsp;" + "out of" + "&nbsp;" + questions.length + "</h2>");
-
-
-            $("#test_status").html("Test Completed");
-            $("#btnno").hide();
-            $("#Button1").prop('disabled', true);
-            $("#btnnext").prop('disabled', true);
-            $("#btnEndTest").prop('disabled', true);
-            $("#ptest_ended").html("You Have Ended Your Test ! Contact Your HOD For Your Details...");
+            
+            
             FetchStudentDetails();
 
 
@@ -277,10 +269,17 @@
                 data: JSON.stringify(obj),
                 dataType: "json",
                 success: function (response) {
-                    var student = response.d;
-                    var studentdetails = JSON.parse(student);
-                    //alert(studentdetails);
+                    test.html("<h2>Your score is " + correct + "&nbsp;" + "out of" + "&nbsp;" + questions.length + "</h2>");
 
+
+                    $("#test_status").html("Test Completed");
+                    $("#btnno").hide();
+                    $("#Button1").prop('disabled', true);
+                    $("#btnnext").prop('disabled', true);
+                    $("#btnEndTest").prop('disabled', true);
+                    $("#ptest_ended").html("You Have Ended Your Test ! Contact Your HOD For Your Details...");
+                    EndCountDown();
+                    $("#timerText").hide();
                 },
                 failure: function (response) {
                     alert(response.d);
